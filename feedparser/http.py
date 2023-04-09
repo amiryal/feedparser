@@ -46,15 +46,17 @@ ACCEPT_HEADER: str = (
 )
 
 
-def get(url: str, result: dict[str, typing.Any]) -> bytes:
-    from . import USER_AGENT
-
-    agent = USER_AGENT
-
+def get(
+    url: str,
+    result: dict[str, typing.Any],
+    request_headers: typing.Optional[dict[str, str]] = None,
+) -> bytes:
+    headers = {"accept": ACCEPT_HEADER}
+    headers.update(request_headers or {})
     try:
         response = requests.get(
             url,
-            headers={"User-Agent": agent, "Accept": ACCEPT_HEADER},
+            headers=headers,
             timeout=10,
         )
     except requests.RequestException as exception:

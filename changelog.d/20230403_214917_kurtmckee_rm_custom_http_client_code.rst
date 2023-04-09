@@ -19,20 +19,18 @@ Breaking changes
     before passing the content to feedparser.
     This removes an untested code path.
 
-*   ``feedparser.parse()`` no longer accepts parameters that customize HTTP requests.
+*   ``feedparser.parse()`` no longer uses ``urllib2`` under the hood.
 
-    Specifically, these parameters are no longer accepted:
+    As a consequence, these parameters have changed semantics:
 
-    *   ``agent``
-    *   ``etag``
-    *   ``modified``
-    *   ``referrer``
-    *   ``handlers``
-    *   ``request_headers``
+    *   ``modified``: passed in the request as-is and must be of type ``str``.
+    *   ``handlers``: has been removed and is no longer accepted.
 
-    If you still need to customize these values,
-    please use an HTTP client like the ``requests`` package to request a URL,
-    then pass the resulting content to ``feedparser.parse()``.
+    Some missing functionality is already supported by the ``requests`` package
+    in a different way (e.g. detecting ``HTTP_PROXY`` from the environment). If
+    you still need to customize the request beyond that, then please use an HTTP
+    client to request a URL and pass the resulting content to
+    ``feedparser.parse()``.
 
 *   TLS certificates are now verified
     due to default behavior in the ``requests`` package.
